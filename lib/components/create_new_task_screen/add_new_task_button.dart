@@ -2,7 +2,7 @@ import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../screens/create_task_screen.dart';
+import '../../screens/create_task_screen.dart';
 
 class AddNewTaskButton extends StatelessWidget {
   const AddNewTaskButton({super.key});

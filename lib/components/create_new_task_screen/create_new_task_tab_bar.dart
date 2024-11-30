@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:remind_me/entities/task.dart';
 
-import '../hive/hive_boxes.dart';
+import '../../hive/hive_boxes.dart';
 
 class CreateNewTaskTabBar extends StatelessWidget {
   final Task? task;

@@ -2,11 +2,11 @@ import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:remind_me/components/single_task_row.dart';
+import 'package:remind_me/components/home_screen/single_task_row.dart';
 
-import '../entities/task.dart';
-import '../hive/hive_boxes.dart';
-import '../screens/create_task_screen.dart';
+import '../../entities/task.dart';
+import '../../hive/hive_boxes.dart';
+import '../../screens/create_task_screen.dart';
 
 // class RemindMeList extends StatelessWidget {
 //   const RemindMeList({super.key});

@@ -11,7 +11,7 @@ import 'package:remind_me/entities/task.dart';
 import 'package:remind_me/hive/hive_boxes.dart';
 import 'package:remind_me/screens/home_screen.dart';
 
-import '../components/create_new_task_tab_bar.dart';
+import '../components/create_new_task_screen/create_new_task_tab_bar.dart';
 import '../components/forms/input_field_switch_layout.dart';
 import '../components/forms/select_input_field_layout.dart';
 import '../constants/selectors.dart';

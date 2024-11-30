@@ -1,7 +1,7 @@
 import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 
-import '../entities/task.dart';
+import '../../entities/task.dart';
 
 class SingleTaskRow extends StatelessWidget {
   final Task task;

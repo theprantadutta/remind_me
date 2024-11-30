@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:remind_me/components/floating_add_task_button.dart';
-import 'package:remind_me/components/home_screen_top_bar.dart';
-import 'package:remind_me/components/remind_me_list.dart';
+import 'package:remind_me/components/home_screen/floating_add_task_button.dart';
+import 'package:remind_me/components/home_screen/home_screen_top_bar.dart';
+import 'package:remind_me/components/home_screen/remind_me_list.dart';
 
 import '../constants/selectors.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remind_me/components/add_new_task_button.dart';
+import 'package:remind_me/components/create_new_task_screen/add_new_task_button.dart';
 
 class FloatingAddTaskButton extends StatelessWidget {
   const FloatingAddTaskButton({super.key});
