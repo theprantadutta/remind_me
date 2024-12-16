@@ -21,12 +21,28 @@ class SingleTaskRow extends StatelessWidget {
     final DateTime? nextReminder = task.notificationTime.isNotEmpty
         ? task.notificationTime.reduce((a, b) => a.isBefore(b) ? a : b)
         : null;
+
+// Function to format the time difference
+    String _formatTime(Duration duration) {
+      if (duration.inDays > 0) {
+        return "${duration.inDays} day${duration.inDays > 1 ? 's' : ''}";
+      } else if (duration.inHours > 0) {
+        return "${duration.inHours} hr${duration.inHours > 1 ? 's' : ''}";
+      } else if (duration.inMinutes > 0) {
+        return "${duration.inMinutes} min${duration.inMinutes > 1 ? 's' : ''}";
+      } else if (duration.inSeconds > 0) {
+        return "${duration.inSeconds} sec${duration.inSeconds > 1 ? 's' : ''}";
+      } else {
+        return "Just now"; // Handle the case where the duration is very small (less than 1 second)
+      }
+    }
+
     final Duration? timeUntilNextReminder =
         nextReminder?.difference(DateTime.now());
     final String nextReminderText = timeUntilNextReminder != null
-        ? timeUntilNextReminder.inMinutes > 60
-            ? "${timeUntilNextReminder.inHours} hr${timeUntilNextReminder.inHours > 1 ? 's' : ''}"
-            : "${timeUntilNextReminder.inMinutes} min${timeUntilNextReminder.inMinutes > 1 ? 's' : ''}"
+        ? (timeUntilNextReminder.isNegative
+            ? _formatTime(timeUntilNextReminder.abs()) + " ago" // Past time
+            : "In " + _formatTime(timeUntilNextReminder)) // Future time
         : "No Reminders";
 
     return Padding(
@@ -120,7 +136,7 @@ class SingleTaskRow extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "Next: $nextReminderText",
+                            "$nextReminderText",
                             style: TextStyle(
                               fontSize: 13,
                               color: textColor,

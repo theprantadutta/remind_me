@@ -1,6 +1,8 @@
 /// Enum to represent different recurrence types
 enum RecurrenceType {
   none, // No recurrence
+  minute, // Repeats every minute
+  hour, // Repeats every hour
   daily, // Repeats every day
   weekly, // Repeats every week
   monthly, // Repeats every month
@@ -13,6 +15,10 @@ extension RecurrenceTypeExtension on RecurrenceType {
     switch (this) {
       case RecurrenceType.none:
         return "None";
+      case RecurrenceType.minute:
+        return "Minute";
+      case RecurrenceType.hour:
+        return "Hour";
       case RecurrenceType.daily:
         return "Daily";
       case RecurrenceType.weekly:

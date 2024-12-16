@@ -10,7 +10,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      isActive: json['isActive'] as bool,
+      isActive: json['isActive'] as bool? ?? true,
       deleteWhenExpired: json['deleteWhenExpired'] as bool,
       notificationTime: (json['notificationTime'] as List<dynamic>)
           .map((e) => DateTime.parse(e as String))

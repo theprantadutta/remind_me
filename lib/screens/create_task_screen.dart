@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:nanoid2/nanoid2.dart';
@@ -10,6 +11,7 @@ import 'package:remind_me/components/forms/multi_date_time_select_layout.dart';
 import 'package:remind_me/entities/task.dart';
 import 'package:remind_me/hive/hive_boxes.dart';
 import 'package:remind_me/screens/home_screen.dart';
+import 'package:remind_me/services/notification_service.dart';
 
 import '../components/create_new_task_screen/create_new_task_tab_bar.dart';
 import '../components/forms/input_field_switch_layout.dart';
@@ -47,6 +49,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   );
 
   bool isFinished = false;
+
+  bool hasErrors = true;
 
   @override
   void initState() {
@@ -88,9 +92,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       lastDate: DateTime(2100),
     );
     if (date != null) {
+      final kPrimaryColor = Theme.of(context).primaryColor;
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
+        barrierColor: kPrimaryColor,
       );
       if (time != null) {
         setState(() {
@@ -116,6 +122,27 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return (_title.text.isNotEmpty &&
         _description.text.isNotEmpty &&
         _notificationTime.isNotEmpty);
+  }
+
+  RepeatInterval mapRecurrenceToInterval(RecurrenceType recurrenceType) {
+    switch (recurrenceType) {
+      case RecurrenceType.daily:
+        return RepeatInterval.daily;
+      case RecurrenceType.weekly:
+        return RepeatInterval.weekly;
+      case RecurrenceType.minute:
+        return RepeatInterval.everyMinute;
+      case RecurrenceType.hour:
+        return RepeatInterval.hourly;
+      // Add more cases if needed
+      default:
+        throw UnsupportedError('Unsupported RecurrenceType');
+    }
+  }
+
+  bool areAllDatesInFuture(List<DateTime> notificationTime) {
+    final now = DateTime.now();
+    return notificationTime.every((dateTime) => dateTime.isAfter(now));
   }
 
   @override
@@ -256,8 +283,27 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             // activeColor: Colors.blueGrey,
                             isFinished: isFinished,
                             onWaitingProcess: () async {
+                              if (!areAllDatesInFuture(_notificationTime)) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Plese select Future Date Time Only'),
+                                  ),
+                                );
+                                setState(() {
+                                  isFinished = true;
+                                  hasErrors = true;
+                                });
+                                return;
+                              }
+
                               final isRecurrenceTypeInValid =
                                   _recurrenceType == RecurrenceType.none;
+
+                              // Cancel any existing notification for this task ID
+                              await NotificationService()
+                                  .cancelNotification(_id.hashCode);
+
                               var task = Task(
                                 id: _id,
                                 title: _title.text,
@@ -275,13 +321,49 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                     ? null
                                     : _recurrenceEndDate,
                               );
+
                               final taskBox = Hive.box<Task>(taskBoxKey);
                               await taskBox.put(_id, task);
+
+                              // Schedule notifications
+                              if (_notificationTime.isNotEmpty) {
+                                if (isRecurrenceTypeInValid) {
+                                  for (var dateTime in _notificationTime) {
+                                    await NotificationService()
+                                        .scheduleNotification(
+                                      id: _id
+                                          .hashCode, // Unique ID for each notification
+                                      title: _title.text,
+                                      body: _description.text,
+                                      scheduledDateTime: dateTime,
+                                    );
+                                  }
+                                } else {
+                                  RepeatInterval interval =
+                                      mapRecurrenceToInterval(_recurrenceType);
+                                  await NotificationService()
+                                      .scheduleIntervalNotification(
+                                    id: _id.hashCode,
+                                    title: _title.text,
+                                    body: _description.text,
+                                    interval: interval,
+                                  );
+                                }
+                              }
+
                               setState(() {
+                                hasErrors = false;
                                 isFinished = true;
                               });
                             },
                             onFinish: () async {
+                              if (hasErrors) {
+                                setState(() {
+                                  isFinished = false;
+                                  hasErrors = true;
+                                });
+                                return;
+                              }
                               await Navigator.push(
                                 context,
                                 PageTransition(

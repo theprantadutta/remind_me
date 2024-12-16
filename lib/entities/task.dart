@@ -9,7 +9,7 @@ class Task extends HiveObject {
     required this.id,
     required this.title,
     required this.description,
-    required this.isActive,
+    this.isActive = true,
     required this.deleteWhenExpired,
     required this.notificationTime,
     required this.recurrenceType,
@@ -20,7 +20,7 @@ class Task extends HiveObject {
   final String id;
   final String title;
   final String description;
-  final bool isActive;
+  bool isActive;
   final List<DateTime> notificationTime;
 
   final bool deleteWhenExpired;

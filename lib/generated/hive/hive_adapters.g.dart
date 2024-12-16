@@ -20,7 +20,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       id: fields[0] as String,
       title: fields[1] as String,
       description: fields[4] as String,
-      isActive: fields[5] as bool,
+      isActive: fields[5] == null ? true : fields[5] as bool,
       deleteWhenExpired: fields[12] as bool,
       notificationTime: (fields[6] as List).cast<DateTime>(),
       recurrenceType: fields[8] as String,

@@ -5,6 +5,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:remind_me/entities/task.dart';
 
 import '../../hive/hive_boxes.dart';
+import '../../services/notification_service.dart';
 
 class CreateNewTaskTabBar extends StatelessWidget {
   final Task? task;
@@ -69,51 +70,134 @@ class CreateNewTaskTabBar extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
-                        title: Text('Are you sure?'),
-                        // content: Text('Are you sure want to delete this task?'),
+                      return Dialog(
                         shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        content: Builder(
-                          builder: (context) {
-                            return Container(
-                              height: MediaQuery.sizeOf(context).height * 0.15,
-                              width: MediaQuery.sizeOf(context).width * 0.9,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Are you sure you want to delete this task?',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: ClayContainer(
+                          depth: 0,
+                          spread: 2,
+                          borderRadius: 20,
+                          color: Colors.grey.shade100,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ClayText(
+                                  'Are you sure?',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textColor: Colors.black.withOpacity(0.7),
+                                ),
+                                const SizedBox(height: 16),
+                                ClayText(
+                                  'Are you sure you want to delete this task?',
+                                  textColor: Colors.grey,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => Navigator.pop(context),
+                                      child: ClayContainer(
+                                        depth: 10,
+                                        borderRadius: 10,
+                                        color: Colors.grey.shade50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 8),
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                              color: Colors.blueAccent,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () async {
-                                          final taskBox =
-                                              Hive.box<Task>(taskBoxKey);
-                                          await taskBox.delete(task!.id);
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text('Delete'),
+                                    // GestureDetector(
+                                    //   onTap: () async {
+                                    //     final taskBox =
+                                    //         Hive.box<Task>(taskBoxKey);
+                                    //     await taskBox.delete(task!.id);
+                                    //     Navigator.pop(
+                                    //         context); // Close the dialog
+                                    //     Navigator.pop(
+                                    //         context); // Close any other page
+                                    //   },
+                                    //   child: ClayContainer(
+                                    //     depth: 10,
+                                    //     borderRadius: 10,
+                                    //     color: Colors.grey.shade50,
+                                    //     child: Padding(
+                                    //       padding: const EdgeInsets.symmetric(
+                                    //           horizontal: 20, vertical: 8),
+                                    //       child: Text(
+                                    //         'Delete',
+                                    //         style: TextStyle(
+                                    //           color: Colors.redAccent,
+                                    //           fontWeight: FontWeight.bold,
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        if (task == null) return;
+                                        final taskBox =
+                                            Hive.box<Task>(taskBoxKey);
+
+                                        // Check if the task is active
+                                        if (task!.isActive) {
+                                          // Cancel all notifications related to this task
+                                          await NotificationService()
+                                              .cancelNotification(
+                                                  task!.id.hashCode);
+                                        }
+
+                                        // Delete the task
+                                        await taskBox.delete(task!.id);
+
+                                        // Close the dialog and any other page
+                                        Navigator.pop(
+                                            context); // Close the dialog
+                                        Navigator.pop(
+                                            context); // Close any other page
+                                      },
+                                      child: ClayContainer(
+                                        depth: 10,
+                                        borderRadius: 10,
+                                        color: Colors.grey.shade50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 8),
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: Text('Cancel'),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },

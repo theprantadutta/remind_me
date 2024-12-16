@@ -28,9 +28,9 @@ class AddNewTaskButton extends StatelessWidget {
         spread: 5,
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.grey.shade200,
-            ),
+            // border: Border.all(
+            //   color: Colors.grey.shade200,
+            // ),
             borderRadius: BorderRadius.circular(15),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
