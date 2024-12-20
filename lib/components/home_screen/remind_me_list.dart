@@ -83,17 +83,17 @@ class RemindMeList extends StatelessWidget {
                     height: 80,
                     width: 80,
                     customBorderRadius: BorderRadius.circular(50),
-                    child: Icon(
+                    child: const Icon(
                       Icons.hourglass_empty_outlined,
                       color: Colors.grey,
                       size: 50,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ClayText(
                     'Add Some Tasks First',
                     color: Colors.grey[500],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 1.5,

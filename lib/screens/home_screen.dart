@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: AnnotatedRegion(
         value: getDefaultSystemUiStyle(isDarkTheme),
-        child: SafeArea(
+        child: const SafeArea(
           child: Stack(
             children: [
               Column(

@@ -52,7 +52,7 @@ class InputFieldLayout extends StatelessWidget {
                 ClayText(
                   label,
                   textColor: Colors.grey[700],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1.2,

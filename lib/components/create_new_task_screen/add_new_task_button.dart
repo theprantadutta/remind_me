@@ -17,7 +17,7 @@ class AddNewTaskButton extends StatelessWidget {
           PageTransition(
             type: PageTransitionType.fade,
             fullscreenDialog: false,
-            child: CreateTaskScreen(),
+            child: const CreateTaskScreen(),
           ),
         );
       },

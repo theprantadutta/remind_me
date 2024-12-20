@@ -35,8 +35,8 @@ class CreateTaskScreen extends StatefulWidget {
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
   String _id = nanoid();
-  TextEditingController _title = TextEditingController(text: '');
-  TextEditingController _description = TextEditingController(text: '');
+  final TextEditingController _title = TextEditingController(text: '');
+  final TextEditingController _description = TextEditingController(text: '');
   bool _isActive = true;
   bool _deleteWhenExpired = true;
   List<DateTime> _notificationTime = [];
@@ -258,21 +258,21 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             });
                           },
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Opacity(
                           opacity: isFormValid() ? 1.0 : 0.6,
                           child: SwipeableButtonView(
                             height: 50,
                             isActive: isFormValid(),
                             buttonText: 'SLIDE TO CREATE TASK',
-                            buttontextstyle: TextStyle(
+                            buttontextstyle: const TextStyle(
                               fontSize: 14,
                               letterSpacing: 1.4,
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
                             buttonWidget: Container(
-                              child: Icon(
+                              child: const Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 color: Colors.grey,
                               ),
@@ -283,7 +283,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             onWaitingProcess: () async {
                               if (!areAllDatesInFuture(_notificationTime)) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     content: Text(
                                         'Plese select Future Date Time Only'),
                                   ),
@@ -367,7 +367,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 PageTransition(
                                   type: PageTransitionType.fade,
                                   fullscreenDialog: false,
-                                  child: HomeScreen(),
+                                  child: const HomeScreen(),
                                 ),
                               );
                               setState(() => isFinished = false);

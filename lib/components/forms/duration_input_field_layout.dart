@@ -85,7 +85,7 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
                 ClayText(
                   widget.label,
                   textColor: Colors.grey[700],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 1.2,
@@ -113,13 +113,13 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            _selectedDuration == Duration()
+                            _selectedDuration == const Duration()
                                 ? widget.hintText
                                 : _formatDuration(_selectedDuration),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: _selectedDuration == Duration()
+                              color: _selectedDuration == const Duration()
                                   ? isDarkTheme
                                       ? Colors.white.withOpacity(0.6)
                                       : Colors.black.withOpacity(0.5)

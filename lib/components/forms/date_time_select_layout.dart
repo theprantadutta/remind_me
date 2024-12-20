@@ -61,7 +61,7 @@ class DateTimeSelectLayout extends StatelessWidget {
                         ClayText(
                           selectedDateTime,
                           textColor: Colors.grey,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -72,8 +72,8 @@ class DateTimeSelectLayout extends StatelessWidget {
                             borderRadius: 10,
                             depth: 10,
                             color: Colors.grey.shade200,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: 15,
                                 vertical: 5,
                               ),

@@ -23,7 +23,7 @@ class SingleTaskRow extends StatelessWidget {
         : null;
 
 // Function to format the time difference
-    String _formatTime(Duration duration) {
+    String formatTime(Duration duration) {
       if (duration.inDays > 0) {
         return "${duration.inDays} day${duration.inDays > 1 ? 's' : ''}";
       } else if (duration.inHours > 0) {
@@ -41,8 +41,8 @@ class SingleTaskRow extends StatelessWidget {
         nextReminder?.difference(DateTime.now());
     final String nextReminderText = timeUntilNextReminder != null
         ? (timeUntilNextReminder.isNegative
-            ? _formatTime(timeUntilNextReminder.abs()) + " ago" // Past time
-            : "In " + _formatTime(timeUntilNextReminder)) // Future time
+            ? "${formatTime(timeUntilNextReminder.abs())} ago" // Past time
+            : "In ${formatTime(timeUntilNextReminder)}") // Future time
         : "No Reminders";
 
     return Padding(
@@ -136,7 +136,7 @@ class SingleTaskRow extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "$nextReminderText",
+                            nextReminderText,
                             style: TextStyle(
                               fontSize: 13,
                               color: textColor,

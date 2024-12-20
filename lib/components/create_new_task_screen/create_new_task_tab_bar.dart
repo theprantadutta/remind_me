@@ -86,7 +86,7 @@ class CreateNewTaskTabBar extends StatelessWidget {
                               children: [
                                 ClayText(
                                   'Are you sure?',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -113,8 +113,8 @@ class CreateNewTaskTabBar extends StatelessWidget {
                                         depth: 10,
                                         borderRadius: 10,
                                         color: Colors.grey.shade50,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 8),
                                           child: Text(
                                             'Cancel',
@@ -180,8 +180,8 @@ class CreateNewTaskTabBar extends StatelessWidget {
                                         depth: 10,
                                         borderRadius: 10,
                                         color: Colors.grey.shade50,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 20, vertical: 8),
                                           child: Text(
                                             'Delete',
@@ -203,7 +203,7 @@ class CreateNewTaskTabBar extends StatelessWidget {
                     },
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.delete_outline_outlined,
                 ),
               ),
