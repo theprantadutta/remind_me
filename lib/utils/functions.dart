@@ -17,6 +17,8 @@ RecurrenceType getRecurrenceTypeFromString(String value) {
       return RecurrenceType.none;
     case "daily":
       return RecurrenceType.daily;
+    case "minute":
+      return RecurrenceType.minute;
     case "weekly":
       return RecurrenceType.weekly;
     case "monthly":

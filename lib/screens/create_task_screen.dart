@@ -92,11 +92,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       lastDate: DateTime(2100),
     );
     if (date != null) {
-      final kPrimaryColor = Theme.of(context).primaryColor;
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        barrierColor: kPrimaryColor,
       );
       if (time != null) {
         setState(() {
