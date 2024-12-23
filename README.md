@@ -1,16 +1,27 @@
-# remind_me
+# Remind Me
 
-A new Flutter project.
+Remind Me is a Flutter app designed to help users stay organized and on schedule. It provides powerful features for scheduling and managing tasks, with automatic cleanup of completed or unwanted tasks. The app also supports recurring tasks with full control over repetition intervals, ensuring a highly customizable and user-friendly experience.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Task Reminders**: Set reminders for specific tasks to ensure you never miss a deadline.
+- **Recurring Tasks**: Schedule tasks to repeat at custom intervals (e.g., daily, weekly, or custom timeframes)
+- **Automatic Cleanup**: Unwanted or expired tasks are automatically removed for a clutter-free experience.
+- **Custom Schedules:**: Fine-tune scheduling and notification times for precise task management.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<p align="center">
+  <img alt="Screenshot" src="./screenshots/remind_me_1.jpg" width="45%" />
+  <img alt="Screenshot" src="./screenshots/remind_me_2.jpg" width="45%" />
+</p>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+  <img alt="Screenshot" src="./screenshots/remind_me_3.jpg" width="45%" />
+  <img alt="Screenshot" src="./screenshots/remind_me_4.jpg" width="45%" />
+</p>
+
+<p align="center">
+  <img alt="Screenshot" src="./screenshots/remind_me_5.jpg" width="45%" />
+  <img alt="Screenshot" src="./screenshots/remind_me_6.jpg" width="45%" />
+</p>
