@@ -8,61 +8,6 @@ import '../../entities/task.dart';
 import '../../hive/hive_boxes.dart';
 import '../../screens/create_task_screen.dart';
 
-// class RemindMeList extends StatelessWidget {
-//   const RemindMeList({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final tasks = Hive.box<Task>(taskBoxKey).values;
-//     if (tasks.isEmpty) {
-//       return Expanded(
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               ClayText(
-//                 'Add Some Tasks First',
-//                 color: Colors.grey[500],
-//                 style: TextStyle(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.w500,
-//                   letterSpacing: 1.5,
-//                 ),
-//               ),
-//               SizedBox(height: 5),
-//               AddNewTaskButton(),
-//             ],
-//           ),
-//         ),
-//       );
-//     }
-//     return Expanded(
-//       child: ListView.builder(
-//         itemCount: tasks.length,
-//         itemBuilder: (context, index) {
-//           final task = tasks.toList()[index];
-//           return GestureDetector(
-//             onTap: () async {
-//               await Navigator.push(
-//                 context,
-//                 PageTransition(
-//                   type: PageTransitionType.fade,
-//                   fullscreenDialog: false,
-//                   child: CreateTaskScreen(
-//                     existingTask: task,
-//                   ),
-//                 ),
-//               );
-//             },
-//             child: SingleTaskRow(task: task),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
 class RemindMeList extends StatelessWidget {
   const RemindMeList({super.key});
 
@@ -106,6 +51,8 @@ class RemindMeList extends StatelessWidget {
             ),
           );
         }
+        tasks.sort((a, b) =>
+            a.notificationTime.first.compareTo(b.notificationTime.first));
         return Expanded(
           child: ListView.builder(
             itemCount: tasks.length,

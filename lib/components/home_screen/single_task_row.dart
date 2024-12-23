@@ -56,7 +56,10 @@ class SingleTaskRow extends StatelessWidget {
         depth: 10,
         spread: 5,
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12.0,
+            vertical: 15.0,
+          ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -93,7 +96,7 @@ class SingleTaskRow extends StatelessWidget {
                         letterSpacing: 0.5,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     // Task Description (optional)
                     if (task.description.isNotEmpty)
                       Text(
