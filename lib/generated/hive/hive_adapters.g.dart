@@ -23,7 +23,8 @@ class TaskAdapter extends TypeAdapter<Task> {
       isActive: fields[5] == null ? true : fields[5] as bool,
       deleteWhenExpired: fields[12] as bool,
       notificationTime: (fields[6] as List).cast<DateTime>(),
-      recurrenceType: fields[8] as String,
+      enableRecurring: fields[13] as bool,
+      recurrenceCount: (fields[14] as num?)?.toInt(),
       recurrenceIntervalInSeconds: (fields[11] as num?)?.toInt(),
       recurrenceEndDate: fields[10] as DateTime?,
     );
@@ -32,7 +33,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -43,14 +44,16 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..write(obj.isActive)
       ..writeByte(6)
       ..write(obj.notificationTime)
-      ..writeByte(8)
-      ..write(obj.recurrenceType)
       ..writeByte(10)
       ..write(obj.recurrenceEndDate)
       ..writeByte(11)
       ..write(obj.recurrenceIntervalInSeconds)
       ..writeByte(12)
-      ..write(obj.deleteWhenExpired);
+      ..write(obj.deleteWhenExpired)
+      ..writeByte(13)
+      ..write(obj.enableRecurring)
+      ..writeByte(14)
+      ..write(obj.recurrenceCount);
   }
 
   @override

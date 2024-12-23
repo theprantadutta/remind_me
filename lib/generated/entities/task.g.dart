@@ -15,7 +15,8 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       notificationTime: (json['notificationTime'] as List<dynamic>)
           .map((e) => DateTime.parse(e as String))
           .toList(),
-      recurrenceType: json['recurrenceType'] as String,
+      enableRecurring: json['enableRecurring'] as bool,
+      recurrenceCount: (json['recurrenceCount'] as num?)?.toInt(),
       recurrenceIntervalInSeconds:
           (json['recurrenceIntervalInSeconds'] as num?)?.toInt(),
       recurrenceEndDate: json['recurrenceEndDate'] == null
@@ -31,7 +32,8 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'notificationTime':
           instance.notificationTime.map((e) => e.toIso8601String()).toList(),
       'deleteWhenExpired': instance.deleteWhenExpired,
-      'recurrenceType': instance.recurrenceType,
+      'enableRecurring': instance.enableRecurring,
       'recurrenceIntervalInSeconds': instance.recurrenceIntervalInSeconds,
+      'recurrenceCount': instance.recurrenceCount,
       'recurrenceEndDate': instance.recurrenceEndDate?.toIso8601String(),
     };

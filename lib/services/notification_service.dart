@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -164,6 +165,9 @@ class NotificationService {
   }) async {
     final tz.TZDateTime tzScheduledDateTime =
         tz.TZDateTime.from(scheduledDateTime, tz.local);
+
+    debugPrint(
+        'Scheduling notification: ID=$id, Title=$title, Body=$body, ScheduledTime=$scheduledDateTime (TZ=$tzScheduledDateTime)');
 
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(

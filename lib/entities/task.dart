@@ -12,7 +12,8 @@ class Task extends HiveObject {
     this.isActive = true,
     required this.deleteWhenExpired,
     required this.notificationTime,
-    required this.recurrenceType,
+    required this.enableRecurring,
+    required this.recurrenceCount,
     this.recurrenceIntervalInSeconds,
     this.recurrenceEndDate,
   });
@@ -26,9 +27,9 @@ class Task extends HiveObject {
   final bool deleteWhenExpired;
 
   // Recurrence settings
-  final String
-      recurrenceType; // Type of recurrence (e.g., none, daily, weekly, etc.)
+  final bool enableRecurring;
   final int? recurrenceIntervalInSeconds; // Interval for recurrence in seconds
+  final int? recurrenceCount; // how many interval count should be here
   final DateTime? recurrenceEndDate; // Optional end date for recurrence
 
   /// Connect the generated [_$TaskFromJson] function to the `fromJson`

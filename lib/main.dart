@@ -80,9 +80,14 @@ void onStart(ServiceInstance service) async {
       final tasksToUpdate = taskBox.keys.where((key) {
         final task = taskBox.get(key);
         if (task != null && task.notificationTime.isNotEmpty) {
-          final shouldUpdate = task.notificationTime
+          var shouldUpdate = task.notificationTime
                   .every((dateTime) => dateTime.isBefore(currentTime)) &&
               task.deleteWhenExpired;
+          if (task.enableRecurring) {
+            if (task.recurrenceEndDate == null) {
+              shouldUpdate = false;
+            }
+          }
           debugPrint(
               '[$formattedTime] Task key $key needs update: $shouldUpdate');
           return shouldUpdate;

@@ -37,7 +37,7 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
     final pickedDuration = await showDurationPicker(
       context: context,
       initialDuration: _selectedDuration,
-      durationPickerMode: DurationPickerMode.hms,
+      durationPickerMode: DurationPickerMode.hm,
       // initialEntryMode: DurationPickerEntryMode.inputOnly,
     );
 
@@ -53,11 +53,11 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
-    final seconds = duration.inSeconds.remainder(60);
+    // final seconds = duration.inSeconds.remainder(60);
 
     return '${hours.toString().padLeft(2, '0')}h : '
-        '${minutes.toString().padLeft(2, '0')}m : '
-        '${seconds.toString().padLeft(2, '0')}s';
+        '${minutes.toString().padLeft(2, '0')}m';
+    // '${seconds.toString().padLeft(2, '0')}s';
   }
 
   @override

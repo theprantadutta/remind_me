@@ -9,6 +9,7 @@ class InputFieldLayout extends StatelessWidget {
   final String label;
   final String hintText;
   final int maxLines;
+  final TextInputType? textInputType;
 
   const InputFieldLayout({
     super.key,
@@ -17,6 +18,7 @@ class InputFieldLayout extends StatelessWidget {
     required this.label,
     this.maxLines = 1,
     required this.hintText,
+    this.textInputType,
   });
 
   @override
@@ -66,6 +68,7 @@ class InputFieldLayout extends StatelessWidget {
                   color: containerColor,
                   child: TextField(
                     controller: textEditingController,
+                    keyboardType: textInputType ?? TextInputType.text,
                     maxLines: maxLines,
                     // onChanged: (value) {
                     //   inputController.text = value;

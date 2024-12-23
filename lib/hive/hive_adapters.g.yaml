@@ -5,7 +5,7 @@ nextTypeId: 1
 types:
   Task:
     typeId: 0
-    nextIndex: 13
+    nextIndex: 15
     fields:
       id:
         index: 0
@@ -17,11 +17,13 @@ types:
         index: 5
       notificationTime:
         index: 6
-      recurrenceType:
-        index: 8
       recurrenceEndDate:
         index: 10
       recurrenceIntervalInSeconds:
         index: 11
       deleteWhenExpired:
         index: 12
+      enableRecurring:
+        index: 13
+      recurrenceCount:
+        index: 14
