@@ -40,14 +40,14 @@ dependencies:
   hive_ce_flutter: ^2.1.0
   json_annotation: ^4.9.0
   json_serializable: ^6.9.0
-  animate_do: ^3.3.4
+  animate_do: ^4.2.0
   google_fonts: ^6.2.1
   safe_int_id: ^1.1.1
   intl: ^0.20.1
   page_transition: ^2.1.0
   nanoid2: ^2.0.1
-  material_duration_picker: ^0.0.2+1
-  flutter_local_notifications: ^18.0.1
+  material_duration_picker: ^0.1.1
+  flutter_local_notifications: ^19.4.2
   timezone: ^0.10.0
   flutter_background_service: ^5.0.10
   flutter_background_service_android: ^6.2.7
@@ -55,7 +55,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
   hive_ce_generator: ^1.8.1
   build_runner: ^2.4.13
   lint_staged: ^0.5.1

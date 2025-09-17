@@ -8,7 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:material_duration_picker/material_duration_picker.dart';
+
 import 'package:remind_me/hive/hive_registrar.g.dart';
 import 'package:remind_me/services/hive_service.dart';
 import 'package:remind_me/services/notification_service.dart';
@@ -163,15 +163,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        DefaultDurationPickerMaterialLocalizations.delegate,
-      ],
+      localizationsDelegates: const [],
       title: 'Remind Me',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
         useMaterial3: true,
         fontFamily: GoogleFonts.nunito().fontFamily,
+        scaffoldBackgroundColor: Colors.transparent, // Make scaffold transparent for gradient
       ),
       home: const HomeScreen(),
     );

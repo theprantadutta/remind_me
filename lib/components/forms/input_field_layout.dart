@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:clay_containers/widgets/clay_container.dart';
-import 'package:clay_containers/widgets/clay_text.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants/colors.dart';
 
 class InputFieldLayout extends StatelessWidget {
   final TextEditingController textEditingController;
@@ -24,55 +24,48 @@ class InputFieldLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    // final containerColor = Theme.of(context).scaffoldBackgroundColor;
-    final containerColor = Colors.grey.shade50.withOpacity(0.1);
-
-    final border = OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.black.withOpacity(0.1),
-        width: 0.5,
-      ),
-      borderRadius: BorderRadius.circular(15),
-    );
 
     return FadeInUp(
       duration: Duration(milliseconds: index * 150),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ClayContainer(
-          color: containerColor,
-          borderRadius: 20,
-          depth: 10,
-          spread: 2,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: isDarkTheme ? kDarkCardGradient : kCardGradient,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: kShadowColor,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Label Text
-                ClayText(
+                Text(
                   label,
-                  textColor: Colors.grey[700],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
+                    color: isDarkTheme ? Colors.white : kTextPrimary,
                     letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(height: 5),
-                // Input Field
-                ClayContainer(
-                  borderRadius: 10,
-                  depth: -5,
-                  color: containerColor,
+                const SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: TextField(
                     controller: textEditingController,
                     keyboardType: textInputType ?? TextInputType.text,
                     maxLines: maxLines,
-                    // onChanged: (value) {
-                    //   inputController.text = value;
-                    // },
                     onTapOutside: (event) {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
@@ -81,15 +74,12 @@ class InputFieldLayout extends StatelessWidget {
                       hintStyle: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: isDarkTheme
-                            ? Colors.white.withOpacity(0.6)
-                            : Colors.black.withOpacity(0.5),
+                        color: isDarkTheme ? Colors.white.withValues(alpha: 0.6) : Colors.black.withValues(alpha: 0.5),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 12),
-                      border: border,
-                      enabledBorder: border,
-                      focusedBorder: border,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
                     style: TextStyle(
                       fontSize: 14,

@@ -15,9 +15,11 @@ import 'package:remind_me/services/notification_service.dart';
 
 import '../components/create_new_task_screen/create_new_task_tab_bar.dart';
 import '../components/forms/input_field_switch_layout.dart';
+import '../constants/colors.dart';
 import '../constants/selectors.dart';
 import '../enums/recurrence_type.dart';
 import '../packages/swipeable_button_view/swipeable_button_view.dart';
+import '../utils/snackbar_utils.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   final Task? existingTask;
@@ -88,12 +90,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-    if (date != null) {
+    if (date != null && mounted) {
       final time = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
       );
-      if (time != null) {
+      if (time != null && mounted) {
         setState(() {
           _notificationTime.add(DateTime(
             date.year,
@@ -140,15 +142,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return notificationTime.every((dateTime) => dateTime.isAfter(now));
   }
 
-  saveAndScheduleTask() async {
+  Future<void> saveAndScheduleTask() async {
     debugPrint("saveAndScheduleTask called");
 
     if (!areAllDatesInFuture(_notificationTime)) {
       debugPrint("Validation failed: Not all dates are in the future.");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select Future Date Time Only'),
-        ),
+      SnackbarUtils.showErrorSnackBar(
+        context,
+        'Please select future date and time only',
       );
       setState(() {
         isFinished = true;
@@ -240,175 +241,178 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: AnnotatedRegion(
-        value: getDefaultSystemUiStyle(isDarkTheme),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CreateNewTaskTabBar(
-                  task: widget.existingTask,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 5,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: isDarkTheme ? kDarkBackgroundGradient : kBackgroundGradient,
+        ),
+        child: AnnotatedRegion(
+          value: getDefaultSystemUiStyle(isDarkTheme),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CreateNewTaskTabBar(
+                    task: widget.existingTask,
                   ),
-                  child: SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.87,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          InputFieldSwitchLayout(
-                            index: 0,
-                            label: "Active Status",
-                            value: _isActive,
-                            onChanged: (newValue) {
-                              setState(() {
-                                _isActive = newValue;
-                              });
-                            },
-                          ),
-                          InputFieldLayout(
-                            index: 1,
-                            label: 'Title',
-                            hintText: 'Enter Task Title',
-                            textEditingController: _title,
-                          ),
-                          InputFieldLayout(
-                            index: 2,
-                            label: 'Description',
-                            hintText: 'Enter Task Description',
-                            maxLines: 2,
-                            textEditingController: _description,
-                          ),
-                          MultiDateTimeSelectLayout(
-                            index: 3,
-                            label: 'Notification Time',
-                            selectedDates: _notificationTime,
-                            onAddDateTime: _addDateTime,
-                            onRemoveDateTime: _removeDateTime,
-                          ),
-                          InputFieldSwitchLayout(
-                            index: 4,
-                            label: "Enable Recurring",
-                            value: _enableRecurring,
-                            onChanged: (newValue) {
-                              setState(() {
-                                _enableRecurring = newValue;
-                              });
-                            },
-                          ),
-                          if (_enableRecurring)
-                            SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  DurationInputFieldLayout(
-                                    index: 4,
-                                    label: "Recurrence Interval",
-                                    hintText:
-                                        "Pick Recurrence (In Hours, Minutes)",
-                                    onChange: (seconds) => setState(
-                                      () => _recurrentInterval = seconds,
-                                    ),
-                                  ),
-                                  InputFieldLayout(
-                                    index: 4,
-                                    label: 'Recurrence Count',
-                                    hintText: 'Enter Recurrence Count',
-                                    textEditingController: _recurringCount,
-                                    textInputType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: false,
-                                      signed: false,
-                                    ),
-                                  ),
-                                  DateTimeSelectLayout(
-                                    index: 4,
-                                    label: "Recurrence End Date",
-                                    selectedDateTime: _recurrenceEndDate == null
-                                        ? 'Never'
-                                        : DateFormat('dd MMM, yyyy')
-                                            .format(_recurrenceEndDate!),
-                                    onChange: () async {
-                                      final now = DateTime.now();
-                                      final dateTime = await showDatePicker(
-                                        context: context,
-                                        initialDate: _recurrenceEndDate,
-                                        firstDate: now,
-                                        lastDate: DateTime(
-                                          now.year + 1,
-                                          now.month,
-                                          now.day,
-                                        ),
-                                      );
-                                      setState(() {
-                                        _recurrenceEndDate = dateTime;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 5,
+                    ),
+                    child: SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.87,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            InputFieldSwitchLayout(
+                              index: 0,
+                              label: "Active Status",
+                              value: _isActive,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _isActive = newValue;
+                                });
+                              },
                             ),
-                          InputFieldSwitchLayout(
-                            index: 5,
-                            label: "Delete When Expired",
-                            value: _deleteWhenExpired,
-                            onChanged: (newValue) {
-                              setState(() {
-                                _deleteWhenExpired = newValue;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 5),
-                          Opacity(
-                            opacity: isFormValid() ? 1.0 : 0.6,
-                            child: SwipeableButtonView(
-                              height: 50,
-                              isActive: isFormValid(),
-                              buttonText: 'SLIDE TO CREATE TASK',
-                              buttontextstyle: const TextStyle(
-                                fontSize: 14,
-                                letterSpacing: 1.4,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
+                            InputFieldLayout(
+                              index: 1,
+                              label: 'Title',
+                              hintText: 'Enter Task Title',
+                              textEditingController: _title,
+                            ),
+                            InputFieldLayout(
+                              index: 2,
+                              label: 'Description',
+                              hintText: 'Enter Task Description',
+                              maxLines: 2,
+                              textEditingController: _description,
+                            ),
+                            MultiDateTimeSelectLayout(
+                              index: 3,
+                              label: 'Notification Time',
+                              selectedDates: _notificationTime,
+                              onAddDateTime: _addDateTime,
+                              onRemoveDateTime: _removeDateTime,
+                            ),
+                            InputFieldSwitchLayout(
+                              index: 4,
+                              label: "Enable Recurring",
+                              value: _enableRecurring,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _enableRecurring = newValue;
+                                });
+                              },
+                            ),
+                            if (_enableRecurring)
+                              SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    DurationInputFieldLayout(
+                                      index: 4,
+                                      label: "Recurrence Interval",
+                                      hintText:
+                                          "Pick Recurrence (In Hours, Minutes)",
+                                      onChange: (seconds) => setState(
+                                        () => _recurrentInterval = seconds,
+                                      ),
+                                    ),
+                                    InputFieldLayout(
+                                      index: 4,
+                                      label: 'Recurrence Count',
+                                      hintText: 'Enter Recurrence Count',
+                                      textEditingController: _recurringCount,
+                                      textInputType:
+                                          const TextInputType.numberWithOptions(
+                                        decimal: false,
+                                        signed: false,
+                                      ),
+                                    ),
+                                    DateTimeSelectLayout(
+                                      index: 4,
+                                      label: "Recurrence End Date",
+                                      selectedDateTime: _recurrenceEndDate == null
+                                          ? 'Never'
+                                          : DateFormat('dd MMM, yyyy')
+                                              .format(_recurrenceEndDate!),
+                                      onChange: () async {
+                                        final now = DateTime.now();
+                                        final dateTime = await showDatePicker(
+                                          context: context,
+                                          initialDate: _recurrenceEndDate,
+                                          firstDate: now,
+                                          lastDate: DateTime(
+                                            now.year + 1,
+                                            now.month,
+                                            now.day,
+                                          ),
+                                        );
+                                        setState(() {
+                                          _recurrenceEndDate = dateTime;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
-                              buttonWidget: Container(
-                                child: const Icon(
+                            InputFieldSwitchLayout(
+                              index: 5,
+                              label: "Delete When Expired",
+                              value: _deleteWhenExpired,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _deleteWhenExpired = newValue;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 5),
+                            Opacity(
+                              opacity: isFormValid() ? 1.0 : 0.6,
+                              child: SwipeableButtonView(
+                                height: 50,
+                                isActive: isFormValid(),
+                                buttonText: 'SLIDE TO CREATE TASK',
+                                buttontextstyle: const TextStyle(
+                                  fontSize: 14,
+                                  letterSpacing: 1.4,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                buttonWidget: const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   color: Colors.grey,
                                 ),
+                                activeColor: kPrimaryColor,
+                                // activeColor: Colors.blueGrey,
+                                isFinished: isFinished,
+                                onWaitingProcess: saveAndScheduleTask,
+                                onFinish: () async {
+                                  if (hasErrors) {
+                                    setState(() {
+                                      isFinished = false;
+                                      hasErrors = true;
+                                    });
+                                    return;
+                                  }
+                                  await Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.fade,
+                                      fullscreenDialog: false,
+                                      child: const HomeScreen(),
+                                    ),
+                                  );
+                                  setState(() => isFinished = false);
+                                },
                               ),
-                              activeColor: Colors.grey.shade700,
-                              // activeColor: Colors.blueGrey,
-                              isFinished: isFinished,
-                              onWaitingProcess: saveAndScheduleTask,
-                              onFinish: () async {
-                                if (hasErrors) {
-                                  setState(() {
-                                    isFinished = false;
-                                    hasErrors = true;
-                                  });
-                                  return;
-                                }
-                                await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    fullscreenDialog: false,
-                                    child: const HomeScreen(),
-                                  ),
-                                );
-                                setState(() => isFinished = false);
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -1,6 +1,6 @@
-import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/colors.dart';
 import '../../entities/task.dart';
 
 class SingleTaskRow extends StatelessWidget {
@@ -13,16 +13,16 @@ class SingleTaskRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final containerColor = Colors.grey.shade100;
-    final textColor = Colors.grey.shade800; // Darker for better contrast
-    final accentColor = Colors.grey.shade600;
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkTheme ? Colors.white : kTextPrimary;
+    final accentColor = isDarkTheme ? kTextLight : kTextSecondary;
 
     // Calculate the next reminder time
     final DateTime? nextReminder = task.notificationTime.isNotEmpty
         ? task.notificationTime.reduce((a, b) => a.isBefore(b) ? a : b)
         : null;
 
-// Function to format the time difference
+    // Function to format the time difference
     String formatTime(Duration duration) {
       if (duration.inDays > 0) {
         return "${duration.inDays} day${duration.inDays > 1 ? 's' : ''}";
@@ -50,36 +50,56 @@ class SingleTaskRow extends StatelessWidget {
         horizontal: 10.0,
         vertical: 8.0,
       ),
-      child: ClayContainer(
-        color: containerColor,
-        borderRadius: 15,
-        depth: 10,
-        spread: 5,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: isDarkTheme ? kDarkCardGradient : kCardGradient,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+              color: kShadowColor,
+              blurRadius: 15,
+              offset: Offset(0, 8),
+            ),
+            BoxShadow(
+              color: kShadowColorDark,
+              blurRadius: 25,
+              offset: Offset(0, 15),
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 12.0,
-            vertical: 15.0,
+            horizontal: 16.0,
+            vertical: 18.0,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Icon for Task Status
-              ClayContainer(
-                borderRadius: 40,
-                depth: task.isActive ? 10 : -10,
-                color: containerColor,
+              Container(
+                decoration: BoxDecoration(
+                  gradient: task.isActive ? kPrimaryButtonGradient : kSecondaryButtonGradient,
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: [
+                    BoxShadow(
+                      color: task.isActive ? kPrimaryColor.withValues(alpha: 0.3) : kShadowColor,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     task.isActive
                         ? Icons.check_circle_rounded
                         : Icons.radio_button_unchecked_rounded,
-                    color: task.isActive ? Colors.grey : accentColor,
+                    color: Colors.white,
                     size: 24,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               // Task Title and Description
               Expanded(
                 child: Column(
@@ -87,12 +107,12 @@ class SingleTaskRow extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Task Title
-                    ClayText(
+                    Text(
                       task.title,
-                      textColor: textColor,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
+                        color: textColor,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -114,39 +134,33 @@ class SingleTaskRow extends StatelessWidget {
               ),
               // Notification Time Indicator
               if (task.notificationTime.isNotEmpty)
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.notifications,
-                                size: 16,
-                                color: accentColor,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                "${task.notificationTime.length} Reminder${task.notificationTime.length > 1 ? 's' : ''}",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: accentColor,
-                                ),
-                              ),
-                            ],
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          size: 16,
+                          color: accentColor,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "${task.notificationTime.length} Reminder${task.notificationTime.length > 1 ? 's' : ''}",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: accentColor,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            nextReminderText,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: textColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      nextReminderText,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: textColor,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],

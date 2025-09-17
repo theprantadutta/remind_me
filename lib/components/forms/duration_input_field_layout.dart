@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:material_duration_picker/material_duration_picker.dart';
+
+import '../../constants/colors.dart';
 
 class DurationInputFieldLayout extends StatefulWidget {
   final int index;
@@ -63,18 +64,24 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    final containerColor = Colors.grey.shade50.withOpacity(0.1);
 
     return FadeInUp(
       duration: Duration(milliseconds: widget.index * 150),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ClayContainer(
+        child: Container(
           width: double.infinity,
-          color: containerColor,
-          borderRadius: 20,
-          depth: 10,
-          spread: 2,
+          decoration: BoxDecoration(
+            gradient: isDarkTheme ? kDarkCardGradient : kCardGradient,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: kShadowColor,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
@@ -82,55 +89,52 @@ class _DurationInputFieldState extends State<DurationInputFieldLayout> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Label Text
-                ClayText(
+                Text(
                   widget.label,
-                  textColor: Colors.grey[700],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
+                    color: isDarkTheme ? Colors.white : kTextPrimary,
                     letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 8),
                 // Duration Input Field
-                ClayContainer(
-                  borderRadius: 10,
-                  depth: -5,
-                  color: containerColor,
-                  child: InkWell(
-                    onTap: _showDurationPicker,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 12),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black.withOpacity(0.1),
-                          width: 0.5,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _selectedDuration == const Duration()
-                                ? widget.hintText
-                                : _formatDuration(_selectedDuration),
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: _selectedDuration == const Duration()
-                                  ? isDarkTheme
-                                      ? Colors.white.withOpacity(0.6)
-                                      : Colors.black.withOpacity(0.5)
-                                  : isDarkTheme
-                                      ? Colors.white
-                                      : Colors.black,
-                              letterSpacing: 1.2,
-                            ),
+                InkWell(
+                  onTap: _showDurationPicker,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _selectedDuration == const Duration()
+                              ? widget.hintText
+                              : _formatDuration(_selectedDuration),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: _selectedDuration == const Duration()
+                                ? isDarkTheme
+                                    ? Colors.white.withValues(alpha: 0.6)
+                                    : Colors.black.withValues(alpha: 0.5)
+                                : isDarkTheme
+                                    ? Colors.white
+                                    : Colors.black,
+                            letterSpacing: 1.2,
                           ),
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          Icons.access_time,
+                          color: isDarkTheme ? Colors.white.withValues(alpha: 0.7) : kTextSecondary,
+                          size: 20,
+                        ),
+                      ],
                     ),
                   ),
                 ),

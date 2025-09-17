@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:clay_containers/widgets/clay_container.dart';
-import 'package:clay_containers/widgets/clay_text.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants/colors.dart';
 
 class DateTimeSelectLayout extends StatelessWidget {
   final int index;
@@ -19,17 +19,24 @@ class DateTimeSelectLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final containerColor = Colors.grey.shade50.withOpacity(0.1);
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return FadeInUp(
       duration: Duration(milliseconds: index * 150),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ClayContainer(
-          color: containerColor,
-          borderRadius: 20,
-          depth: 10,
-          spread: 2,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: isDarkTheme ? kDarkCardGradient : kCardGradient,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: kShadowColor,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             child: Column(
@@ -37,52 +44,54 @@ class DateTimeSelectLayout extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Label Text
-                ClayText(
+                Text(
                   label,
-                  textColor: Colors.grey[700],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
+                    color: isDarkTheme ? Colors.white : kTextPrimary,
                     letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 8),
                 // Date and Time Row
-                ClayContainer(
-                  borderRadius: 10,
-                  depth: -5,
-                  color: containerColor,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Display Selected Date and Time
-                        ClayText(
+                        Text(
                           selectedDateTime,
-                          textColor: Colors.grey,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
+                            color: isDarkTheme ? Colors.white : kTextSecondary,
                           ),
                         ),
                         // Change Button
                         GestureDetector(
                           onTap: onChange,
-                          child: ClayContainer(
-                            borderRadius: 10,
-                            depth: 10,
-                            color: Colors.grey.shade200,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: kSecondaryButtonGradient,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: const Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 15,
-                                vertical: 5,
+                                vertical: 8,
                               ),
-                              child: ClayText(
+                              child: Text(
                                 "Change",
-                                textColor: Colors.grey,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
+                                  color: Colors.white,
                                   letterSpacing: 1.2,
                                 ),
                               ),

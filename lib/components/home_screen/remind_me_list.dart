@@ -1,9 +1,10 @@
-import 'package:clay_containers/clay_containers.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:remind_me/components/home_screen/single_task_row.dart';
 
+import '../../constants/colors.dart';
 import '../../entities/task.dart';
 import '../../hive/hive_boxes.dart';
 import '../../screens/create_task_screen.dart';
@@ -20,33 +21,54 @@ class RemindMeList extends StatelessWidget {
         if (tasks.isEmpty) {
           return Expanded(
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClayContainer(
-                    height: 80,
-                    width: 80,
-                    customBorderRadius: BorderRadius.circular(50),
-                    child: const Icon(
-                      Icons.hourglass_empty_outlined,
-                      color: Colors.grey,
-                      size: 50,
-                    ),
+          child: FadeInUp(
+            duration: const Duration(milliseconds: 800),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    gradient: kPrimaryButtonGradient,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: kShadowColor,
+                        blurRadius: 20,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10),
-                  ClayText(
-                    'Add Some Tasks First',
-                    color: Colors.grey[500],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.5,
-                    ),
+                  child: const Icon(
+                    Icons.hourglass_empty_outlined,
+                    color: Colors.white,
+                    size: 50,
                   ),
-                  // const SizedBox(height: 5),
-                  // const AddNewTaskButton(),
-                ],
+                ),
+                const SizedBox(height: 20),
+                    const Text(
+                      'Add Some Tasks First',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: kTextSecondary,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Create your first reminder to get started',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: kTextLight,
+                        letterSpacing: 0.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -55,23 +77,27 @@ class RemindMeList extends StatelessWidget {
             a.notificationTime.first.compareTo(b.notificationTime.first));
         return Expanded(
           child: ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             itemCount: tasks.length,
             itemBuilder: (context, index) {
               final task = tasks[index];
-              return GestureDetector(
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    PageTransition(
-                      type: PageTransitionType.fade,
-                      fullscreenDialog: false,
-                      child: CreateTaskScreen(
-                        existingTask: task,
+              return FadeInUp(
+                duration: Duration(milliseconds: 400 + (index * 100)),
+                child: GestureDetector(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.fade,
+                        fullscreenDialog: false,
+                        child: CreateTaskScreen(
+                          existingTask: task,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                child: SingleTaskRow(task: task),
+                    );
+                  },
+                  child: SingleTaskRow(task: task),
+                ),
               );
             },
           ),

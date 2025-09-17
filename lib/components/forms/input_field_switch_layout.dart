@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants/colors.dart';
 
 class InputFieldSwitchLayout extends StatelessWidget {
   final int index;
@@ -18,21 +19,28 @@ class InputFieldSwitchLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final containerColor = Colors.grey.shade50.withOpacity(0.1);
+    final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
 
     return FadeInUp(
       duration: Duration(milliseconds: index * 150),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ClayContainer(
-          color: containerColor,
-          borderRadius: 20,
-          depth: 10,
-          spread: 2,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: isDarkTheme ? kDarkCardGradient : kCardGradient,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: kShadowColor,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 5,
+              vertical: 12,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,12 +48,12 @@ class InputFieldSwitchLayout extends StatelessWidget {
               children: [
                 // Label
                 Expanded(
-                  child: ClayText(
+                  child: Text(
                     label,
-                    textColor: Colors.grey[700],
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
+                      color: isDarkTheme ? Colors.white : kTextPrimary,
                       letterSpacing: 1.2,
                     ),
                   ),
@@ -56,10 +64,10 @@ class InputFieldSwitchLayout extends StatelessWidget {
                   child: Switch(
                     value: value,
                     onChanged: onChanged,
-                    activeColor: Colors.grey,
-                    activeTrackColor: Colors.grey.withOpacity(0.5),
-                    inactiveThumbColor: Colors.grey[400],
-                    inactiveTrackColor: Colors.grey[300],
+                    activeThumbColor: kPrimaryColor,
+                    activeTrackColor: kPrimaryColor.withValues(alpha: 0.3),
+                    inactiveThumbColor: isDarkTheme ? Colors.grey[600] : Colors.grey[400],
+                    inactiveTrackColor: isDarkTheme ? Colors.grey[700] : Colors.grey[300],
                   ),
                 ),
               ],
