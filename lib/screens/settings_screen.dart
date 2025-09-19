@@ -145,7 +145,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         activeThumbColor: kPrimaryColor,
                       ),
                     ),
-
                     _buildSectionTitle('Notifications', isDarkTheme),
                     _buildSettingCard(
                       isDarkTheme,
@@ -180,7 +179,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         activeThumbColor: kPrimaryColor,
                       ),
                     ),
-
                     _buildSectionTitle('General', isDarkTheme),
                     _buildSettingCard(
                       isDarkTheme,
@@ -189,7 +187,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       subtitle: 'Select your preferred language',
                       trailing: DropdownButton<String>(
                         value: _selectedLanguage,
-                        dropdownColor: isDarkTheme ? Colors.grey[800] : Colors.white,
+                        dropdownColor:
+                            isDarkTheme ? Colors.grey[800] : Colors.white,
                         style: TextStyle(
                           color: isDarkTheme ? Colors.white : kTextPrimary,
                         ),
@@ -204,7 +203,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         onChanged: _changeLanguage,
                       ),
                     ),
-
                     _buildSectionTitle('About', isDarkTheme),
                     _buildSettingCard(
                       isDarkTheme,
@@ -218,7 +216,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text('Remind Me'),
-                            content: const Text('Version 1.0.0\n\nA simple and elegant reminder app to help you stay organized.'),
+                            content: const Text(
+                                'Version 1.0.0\n\nA simple and elegant reminder app to help you stay organized.'),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.of(context).pop(),
@@ -229,7 +228,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         );
                       },
                     ),
-
                     _buildSectionTitle('Legal', isDarkTheme),
                     _buildSettingCard(
                       isDarkTheme,
@@ -255,7 +253,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () => _launchUrl('mailto:support@remindme.com'),
                     ),
-
                     const SizedBox(height: 20),
                   ],
                 ),

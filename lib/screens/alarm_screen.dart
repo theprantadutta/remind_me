@@ -71,7 +71,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
             width: double.infinity,
             height: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,7 +82,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                     height: 150,
                     width: 150,
                     decoration: BoxDecoration(
-                      gradient: kPrimaryButtonGradient, // Using app's primary gradient
+                      gradient:
+                          kPrimaryButtonGradient, // Using app's primary gradient
                       borderRadius: BorderRadius.circular(75),
                       boxShadow: [
                         BoxShadow(
@@ -110,7 +112,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                       letterSpacing: 2.0,
                       shadows: [
                         Shadow(
-                          color: (isDarkMode ? Colors.black : Colors.white).withValues(alpha: 0.3),
+                          color: (isDarkMode ? Colors.black : Colors.white)
+                              .withValues(alpha: 0.3),
                           blurRadius: 10,
                           offset: const Offset(2, 2),
                         ),
@@ -137,9 +140,11 @@ class _AlarmScreenState extends State<AlarmScreen> {
                   // Time display with proper 12-hour format
                   if (_task != null && _task!.notificationTime.isNotEmpty)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
                       decoration: BoxDecoration(
-                        color: (isDarkMode ? Colors.white : kPrimaryColor).withValues(alpha: 0.1),
+                        color: (isDarkMode ? Colors.white : kPrimaryColor)
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
                           color: accentColor.withValues(alpha: 0.3),
@@ -154,7 +159,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         ],
                       ),
                       child: Text(
-                        DateFormat.jm().format(_task!.notificationTime.first), // 12-hour format with AM/PM
+                        DateFormat.jm().format(_task!.notificationTime
+                            .first), // 12-hour format with AM/PM
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -163,7 +169,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           letterSpacing: 2.0,
                           shadows: [
                             Shadow(
-                              color: (isDarkMode ? Colors.black : Colors.white).withValues(alpha: 0.3),
+                              color: (isDarkMode ? Colors.black : Colors.white)
+                                  .withValues(alpha: 0.3),
                               blurRadius: 8,
                               offset: const Offset(1, 1),
                             ),
@@ -188,7 +195,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: (isDarkMode ? kPrimaryColor : Colors.white).withValues(alpha: 0.3),
+                          color: (isDarkMode ? kPrimaryColor : Colors.white)
+                              .withValues(alpha: 0.3),
                           blurRadius: 15,
                           spreadRadius: 1,
                           offset: const Offset(0, 5),
@@ -201,7 +209,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
-                        foregroundColor: isDarkMode ? Colors.white : Colors.black87,
+                        foregroundColor:
+                            isDarkMode ? Colors.white : Colors.black87,
                         shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -230,7 +239,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: secondaryTextColor,
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 12),
                     ),
                     child: const Text(
                       'Snooze 5 min',

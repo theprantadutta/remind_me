@@ -152,7 +152,8 @@ class NotificationService {
         );
       } else {
         // Just show a regular notification (no alarm screen)
-        debugPrint('Alarm not enabled for task: ${notificationResponse.payload}');
+        debugPrint(
+            'Alarm not enabled for task: ${notificationResponse.payload}');
       }
     }
   }
