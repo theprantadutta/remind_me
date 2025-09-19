@@ -2,6 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:remind_me/entities/task.dart';
+import 'package:remind_me/hive/hive_boxes.dart';
+import 'package:remind_me/main.dart';
+import 'package:remind_me/screens/alarm_screen.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 // class NotificationService {
@@ -106,6 +111,8 @@ class NotificationService {
     // Initialize the plugin
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
+      onDidReceiveNotificationResponse: onNotificationTap,
+      onDidReceiveBackgroundNotificationResponse: onNotificationTap,
     );
 
     // Ask For Permissions
@@ -120,6 +127,33 @@ class NotificationService {
           .resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions();
+    }
+  }
+
+  // Handle notification tap
+  static void onNotificationTap(NotificationResponse notificationResponse) {
+    debugPrint('Notification tapped: ${notificationResponse.payload}');
+
+    if (notificationResponse.payload != null) {
+      // Check if alarm is enabled for this task
+      final taskBox = Hive.box<Task>(taskBoxKey);
+      final task = taskBox.get(notificationResponse.payload);
+
+      if (task != null && task.enableAlarm) {
+        // Navigate to alarm screen if alarm is enabled
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (context) => AlarmScreen(
+              taskId: notificationResponse.payload,
+              title: task.title,
+              body: task.description,
+            ),
+          ),
+        );
+      } else {
+        // Just show a regular notification (no alarm screen)
+        debugPrint('Alarm not enabled for task: ${notificationResponse.payload}');
+      }
     }
   }
 
@@ -162,6 +196,8 @@ class NotificationService {
     required String title,
     required String body,
     required DateTime scheduledDateTime,
+    String? payload,
+    bool enableAlarm = false,
   }) async {
     final tz.TZDateTime tzScheduledDateTime =
         tz.TZDateTime.from(scheduledDateTime, tz.local);
@@ -169,7 +205,7 @@ class NotificationService {
     debugPrint(
         'Scheduling notification: ID=$id, Title=$title, Body=$body, ScheduledTime=$scheduledDateTime (TZ=$tzScheduledDateTime)');
 
-    const NotificationDetails notificationDetails = NotificationDetails(
+    final NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'scheduled_channel_id',
         'Scheduled Notifications',
@@ -177,6 +213,7 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
+        fullScreenIntent: enableAlarm, // Only show full screen for alarms
       ),
     );
 
@@ -186,6 +223,7 @@ class NotificationService {
       body,
       tzScheduledDateTime,
       notificationDetails,
+      payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
@@ -195,8 +233,9 @@ class NotificationService {
     required String title,
     required String body,
     required RepeatInterval interval,
+    bool enableAlarm = false,
   }) async {
-    const NotificationDetails notificationDetails = NotificationDetails(
+    final NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'interval_channel_id',
         'Interval Notifications',
@@ -204,6 +243,7 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
+        fullScreenIntent: enableAlarm, // Only show full screen for alarms
       ),
     );
 

@@ -118,28 +118,32 @@ class _MultiDateTimeSelectState extends State<MultiDateTimeSelectLayout> {
                 }),
                 const SizedBox(height: 10),
                 // Add New Date-Time Button
-                GestureDetector(
-                  onTap: widget.onAddDateTime,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: kSecondaryButtonGradient,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: widget.onAddDateTime,
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(
+                        color: isDarkTheme ? Colors.white70 : kPrimaryColor,
+                        width: 2,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 15,
                         vertical: 12,
                       ),
-                      child: Center(
-                        child: Text(
-                          "Add Date-Time",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
+                      backgroundColor: Colors.transparent,
+                      minimumSize: const Size(double.infinity, 48),
+                    ),
+                    child: Text(
+                      "Add Date-Time",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: isDarkTheme ? Colors.white : kPrimaryColor,
+                        letterSpacing: 1.2,
                       ),
                     ),
                   ),

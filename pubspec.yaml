@@ -51,11 +51,16 @@ dependencies:
   timezone: ^0.10.0
   flutter_background_service: ^5.0.10
   flutter_background_service_android: ^6.2.7
+  shared_preferences: ^2.3.2
+  url_launcher: ^6.3.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  integration_test:
+    sdk: flutter
   hive_ce_generator: ^1.8.1
   build_runner: ^2.4.13
   lint_staged: ^0.5.1

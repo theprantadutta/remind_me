@@ -27,13 +27,14 @@ class TaskAdapter extends TypeAdapter<Task> {
       recurrenceCount: (fields[14] as num?)?.toInt(),
       recurrenceIntervalInSeconds: (fields[11] as num?)?.toInt(),
       recurrenceEndDate: fields[10] as DateTime?,
+      enableAlarm: fields[15] == null ? false : fields[15] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(13)
       ..write(obj.enableRecurring)
       ..writeByte(14)
-      ..write(obj.recurrenceCount);
+      ..write(obj.recurrenceCount)
+      ..writeByte(15)
+      ..write(obj.enableAlarm);
   }
 
   @override

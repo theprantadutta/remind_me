@@ -22,6 +22,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       recurrenceEndDate: json['recurrenceEndDate'] == null
           ? null
           : DateTime.parse(json['recurrenceEndDate'] as String),
+      enableAlarm: json['enableAlarm'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -36,4 +37,5 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'recurrenceIntervalInSeconds': instance.recurrenceIntervalInSeconds,
       'recurrenceCount': instance.recurrenceCount,
       'recurrenceEndDate': instance.recurrenceEndDate?.toIso8601String(),
+      'enableAlarm': instance.enableAlarm,
     };

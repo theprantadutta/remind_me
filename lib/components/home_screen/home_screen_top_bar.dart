@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../constants/colors.dart';
+import '../../screens/settings_screen.dart';
 
 class HomeScreenTopBar extends StatelessWidget {
   const HomeScreenTopBar({super.key});
@@ -27,6 +29,7 @@ class HomeScreenTopBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Remind Me',
@@ -35,6 +38,22 @@ class HomeScreenTopBar extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   color: isDarkTheme ? Colors.white : kTextPrimary,
                   letterSpacing: 1.5,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: const SettingsScreen(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.settings,
+                  color: isDarkTheme ? Colors.white : kTextPrimary,
+                  size: 24,
                 ),
               ),
             ],

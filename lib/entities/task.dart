@@ -16,6 +16,7 @@ class Task extends HiveObject {
     required this.recurrenceCount,
     this.recurrenceIntervalInSeconds,
     this.recurrenceEndDate,
+    this.enableAlarm = false,
   });
 
   final String id;
@@ -31,6 +32,9 @@ class Task extends HiveObject {
   final int? recurrenceIntervalInSeconds; // Interval for recurrence in seconds
   final int? recurrenceCount; // how many interval count should be here
   final DateTime? recurrenceEndDate; // Optional end date for recurrence
+
+  // Alarm settings
+  final bool enableAlarm;
 
   /// Connect the generated [_$TaskFromJson] function to the `fromJson`
   /// factory.
