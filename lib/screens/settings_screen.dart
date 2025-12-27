@@ -46,11 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _toggleTheme(bool value) {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    if (value) {
-      themeProvider.setTheme(true);
-    } else {
-      themeProvider.setTheme(false);
-    }
+    themeProvider.setTheme(isDark: value);
   }
 
   void _toggleNotifications(bool value) {

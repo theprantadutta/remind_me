@@ -8,13 +8,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import 'package:remind_me/hive/hive_registrar.g.dart';
 import 'package:remind_me/providers/theme_provider.dart';
 import 'package:remind_me/services/hive_service.dart';
 import 'package:remind_me/services/notification_service.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:remind_me/services/timezone_service.dart';
+import 'package:remind_me/services/logger_service.dart';
 
 import 'entities/task.dart';
 import 'hive/hive_boxes.dart';
@@ -30,15 +31,20 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize timezone BEFORE starting background service
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation('Asia/Dhaka'));
+  final logger = LoggerService.instance;
+  logger.info('App starting...', tag: 'Main');
+
+  // Initialize timezone with auto-detection
+  await TimezoneService.instance.initialize();
+  logger.info('Timezone: ${TimezoneService.instance.currentTimezone}', tag: 'Main');
 
   await Future.wait([
     NotificationService.initialize(),
     HiveService().initialize(),
     initializeService(),
   ]);
+
+  logger.info('All services initialized', tag: 'Main');
 
   runApp(
     ChangeNotifierProvider(
@@ -93,7 +99,7 @@ void onStart(ServiceInstance service) async {
     final currentTime = tz.TZDateTime.now(tz.local);
     final formattedTime = DateFormat.yMEd().add_jms().format(currentTime);
     debugPrint('[$formattedTime] Background task timer triggered');
-    debugPrint('[$formattedTime] Current time (Asia/Dhaka): $currentTime');
+    debugPrint('[$formattedTime] Current time: $currentTime');
 
     try {
       debugPrint('[$formattedTime] Checking for tasks to update...');
@@ -167,8 +173,6 @@ void onStart(ServiceInstance service) async {
 
       // Send notification about cleanup (only in debug mode)
       if (kDebugMode) {
-        final notificationTime =
-            DateFormat.yMEd().add_jms().format(currentTime);
         final summaryMessage =
             'Cleanup completed: ${tasksToUpdate.length} deactivated, ${keysToDelete.length} deleted';
 
@@ -224,7 +228,6 @@ class MyApp extends StatelessWidget {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           navigatorKey: navigatorKey,
-          localizationsDelegates: const [],
           title: 'Remind Me',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.themeData,
