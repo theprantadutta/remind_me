@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:remind_me/hive/hive_registrar.g.dart';
@@ -27,6 +28,7 @@ import 'entities/task.dart';
 import 'hive/hive_boxes.dart';
 import 'navigation/app_shell.dart';
 import 'screens/alarm_screen.dart';
+import 'screens/onboarding_screen.dart';
 
 const notificationChannelId = 'task_service_channel';
 const notificationId = 888;
@@ -248,12 +250,64 @@ class MyApp extends StatelessWidget {
           title: 'Remind Me',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.themeData,
-          home: const AppShell(),
+          home: const _AppWrapper(),
           routes: {
             '/alarm': (context) => const AlarmScreen(),
           },
         );
       },
     );
+  }
+}
+
+/// Wrapper widget that checks onboarding status
+class _AppWrapper extends StatefulWidget {
+  const _AppWrapper();
+
+  @override
+  State<_AppWrapper> createState() => _AppWrapperState();
+}
+
+class _AppWrapperState extends State<_AppWrapper> {
+  bool? _hasSeenOnboarding;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingStatus();
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final hasSeen = prefs.getBool(OnboardingScreen.hasSeenOnboardingKey) ?? false;
+      if (mounted) {
+        setState(() {
+          _hasSeenOnboarding = hasSeen;
+        });
+      }
+    } catch (e) {
+      // Default to showing main app on error
+      if (mounted) {
+        setState(() {
+          _hasSeenOnboarding = true;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Show loading while checking
+    if (_hasSeenOnboarding == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    // Show onboarding or main app
+    return _hasSeenOnboarding! ? const AppShell() : const OnboardingScreen();
   }
 }

@@ -303,4 +303,30 @@ class TaskProvider extends ChangeNotifier {
   /// Get completed task count
   int get completedTaskCount =>
       SearchFilterService.instance.getCompletedTasks().length;
+
+  /// Get completed tasks list
+  List<Task> get completedTasks =>
+      SearchFilterService.instance.getCompletedTasks();
+
+  /// Restore a completed task (uncomplete it)
+  Future<bool> restoreTask(String taskId) async {
+    return uncompleteTask(taskId);
+  }
+
+  /// Delete all completed tasks
+  Future<void> deleteAllCompletedTasks() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final completed = completedTasks;
+      for (final task in completed) {
+        await TaskCompletionService.instance.deleteTask(task.id);
+      }
+      loadTasks();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

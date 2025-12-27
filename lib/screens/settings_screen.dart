@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/colors.dart';
 import '../providers/theme_provider.dart';
+import 'completed_tasks_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -198,6 +199,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         }).toList(),
                         onChanged: _changeLanguage,
                       ),
+                    ),
+                    _buildSettingCard(
+                      isDarkTheme,
+                      icon: Icons.check_circle_outline,
+                      title: 'Completed Tasks',
+                      subtitle: 'View your completed task archive',
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompletedTasksScreen(),
+                          ),
+                        );
+                      },
                     ),
                     _buildSectionTitle('About', isDarkTheme),
                     _buildSettingCard(
