@@ -25,8 +25,8 @@ import 'package:remind_me/services/logger_service.dart';
 
 import 'entities/task.dart';
 import 'hive/hive_boxes.dart';
+import 'navigation/app_shell.dart';
 import 'screens/alarm_screen.dart';
-import 'screens/home_screen.dart';
 
 const notificationChannelId = 'task_service_channel';
 const notificationId = 888;
@@ -248,7 +248,7 @@ class MyApp extends StatelessWidget {
           title: 'Remind Me',
           debugShowCheckedModeBanner: false,
           theme: themeProvider.themeData,
-          home: const HomeScreen(),
+          home: const AppShell(),
           routes: {
             '/alarm': (context) => const AlarmScreen(),
           },
