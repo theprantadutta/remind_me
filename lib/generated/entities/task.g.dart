@@ -23,6 +23,18 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
           ? null
           : DateTime.parse(json['recurrenceEndDate'] as String),
       enableAlarm: json['enableAlarm'] as bool? ?? false,
+      categoryId: json['categoryId'] as String?,
+      priority: $enumDecodeNullable(_$PriorityEnumMap, json['priority']) ??
+          Priority.medium,
+      tagIds:
+          (json['tagIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      isCompleted: json['isCompleted'] as bool? ?? false,
+      completedAt: json['completedAt'] == null
+          ? null
+          : DateTime.parse(json['completedAt'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -38,4 +50,16 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'recurrenceCount': instance.recurrenceCount,
       'recurrenceEndDate': instance.recurrenceEndDate?.toIso8601String(),
       'enableAlarm': instance.enableAlarm,
+      'categoryId': instance.categoryId,
+      'priority': _$PriorityEnumMap[instance.priority]!,
+      'tagIds': instance.tagIds,
+      'isCompleted': instance.isCompleted,
+      'completedAt': instance.completedAt?.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
     };
+
+const _$PriorityEnumMap = {
+  Priority.high: 'high',
+  Priority.medium: 'medium',
+  Priority.low: 'low',
+};

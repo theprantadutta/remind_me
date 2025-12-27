@@ -2,11 +2,27 @@
 // Do not modify
 // Check in to version control
 
-import 'package:hive_ce/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:remind_me/hive/hive_adapters.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(CategoryAdapter());
+    registerAdapter(CompletedTaskAdapter());
+    registerAdapter(DailyStatsAdapter());
+    registerAdapter(PriorityAdapter());
+    registerAdapter(TagAdapter());
+    registerAdapter(TaskAdapter());
+  }
+}
+
+extension IsolatedHiveRegistrar on IsolatedHiveInterface {
+  void registerAdapters() {
+    registerAdapter(CategoryAdapter());
+    registerAdapter(CompletedTaskAdapter());
+    registerAdapter(DailyStatsAdapter());
+    registerAdapter(PriorityAdapter());
+    registerAdapter(TagAdapter());
     registerAdapter(TaskAdapter());
   }
 }
