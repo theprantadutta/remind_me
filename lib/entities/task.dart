@@ -114,6 +114,10 @@ class Task extends HiveObject {
     bool? isCompleted,
     DateTime? completedAt,
     DateTime? createdAt,
+    // Flags to clear nullable fields
+    bool clearCategoryId = false,
+    bool clearCompletedAt = false,
+    bool clearTagIds = false,
   }) {
     return Task(
       id: id ?? this.id,
@@ -128,11 +132,11 @@ class Task extends HiveObject {
       recurrenceCount: recurrenceCount ?? this.recurrenceCount,
       recurrenceEndDate: recurrenceEndDate ?? this.recurrenceEndDate,
       enableAlarm: enableAlarm ?? this.enableAlarm,
-      categoryId: categoryId ?? this.categoryId,
+      categoryId: clearCategoryId ? null : (categoryId ?? this.categoryId),
       priority: priority ?? this.priority,
-      tagIds: tagIds ?? this.tagIds,
+      tagIds: clearTagIds ? null : (tagIds ?? this.tagIds),
       isCompleted: isCompleted ?? this.isCompleted,
-      completedAt: completedAt ?? this.completedAt,
+      completedAt: clearCompletedAt ? null : (completedAt ?? this.completedAt),
       createdAt: createdAt ?? this.createdAt,
     );
   }

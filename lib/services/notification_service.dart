@@ -262,4 +262,32 @@ class NotificationService {
   Future<void> cancelNotification(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
   }
+
+  /// Cancel all notifications for a task
+  Future<void> cancelNotificationsForTask(String taskId) async {
+    // Get the task to find all notification times
+    final taskBox = Hive.box<Task>(taskBoxKey);
+    final task = taskBox.get(taskId);
+
+    if (task != null) {
+      // Cancel notification for each scheduled time
+      for (final time in task.notificationTime) {
+        final notificationId = time.millisecondsSinceEpoch ~/ 1000;
+        await cancelNotification(notificationId);
+        debugPrint(
+            'Cancelled notification ID=$notificationId for task=$taskId');
+      }
+    }
+  }
+
+  /// Cancel all notifications
+  Future<void> cancelAllNotifications() async {
+    await _flutterLocalNotificationsPlugin.cancelAll();
+    debugPrint('Cancelled all notifications');
+  }
+
+  /// Get pending notifications
+  Future<List<PendingNotificationRequest>> getPendingNotifications() async {
+    return await _flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  }
 }

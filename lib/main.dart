@@ -11,8 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import 'package:remind_me/hive/hive_registrar.g.dart';
+import 'package:remind_me/providers/calendar_provider.dart';
+import 'package:remind_me/providers/category_provider.dart';
+import 'package:remind_me/providers/loading_provider.dart';
+import 'package:remind_me/providers/statistics_provider.dart';
+import 'package:remind_me/providers/task_provider.dart';
 import 'package:remind_me/providers/theme_provider.dart';
 import 'package:remind_me/services/hive_service.dart';
+import 'package:remind_me/services/migration_service.dart';
 import 'package:remind_me/services/notification_service.dart';
 import 'package:remind_me/services/timezone_service.dart';
 import 'package:remind_me/services/logger_service.dart';
@@ -38,17 +44,28 @@ Future<void> main() async {
   await TimezoneService.instance.initialize();
   logger.info('Timezone: ${TimezoneService.instance.currentTimezone}', tag: 'Main');
 
+  // Initialize core services
   await Future.wait([
     NotificationService.initialize(),
-    HiveService().initialize(),
+    HiveService.instance.initialize(),
     initializeService(),
   ]);
+
+  // Run data migrations
+  await MigrationService.instance.runMigrations();
 
   logger.info('All services initialized', tag: 'Main');
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LoadingProvider()),
+        ChangeNotifierProvider(create: (_) => TaskProvider()..loadTasks()),
+        ChangeNotifierProvider(create: (_) => CategoryProvider()..loadCategories()),
+        ChangeNotifierProvider(create: (_) => StatisticsProvider()..loadStatistics()),
+        ChangeNotifierProvider(create: (_) => CalendarProvider()..initialize()),
+      ],
       child: const MyApp(),
     ),
   );

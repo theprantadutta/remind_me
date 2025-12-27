@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(powershell -Command \"Get-ChildItem -Path lib -Recurse -File | Select-Object FullName\")",
+      "Bash(cat:*)",
+      "Bash(flutter pub upgrade:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(dart fix:*)",
+      "Bash(dart run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(flutter pub get:*)"
+    ]
+  }
+}
