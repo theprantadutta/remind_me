@@ -121,6 +121,28 @@ abstract class AppEdgeInsets {
 
   /// No padding
   static const EdgeInsets zero = EdgeInsets.zero;
+
+  /// Simple size-based padding (all sides)
+  static const EdgeInsets xs = EdgeInsets.all(AppSpacing.xs);
+  static const EdgeInsets sm = EdgeInsets.all(AppSpacing.sm);
+  static const EdgeInsets md = EdgeInsets.all(AppSpacing.md);
+  static const EdgeInsets lg = EdgeInsets.all(AppSpacing.lg);
+  static const EdgeInsets xl = EdgeInsets.all(AppSpacing.xl);
+  static const EdgeInsets xxl = EdgeInsets.all(AppSpacing.xxl);
+
+  /// Horizontal padding
+  static const EdgeInsets horizontalXs = EdgeInsets.symmetric(horizontal: AppSpacing.xs);
+  static const EdgeInsets horizontalSm = EdgeInsets.symmetric(horizontal: AppSpacing.sm);
+  static const EdgeInsets horizontalMd = EdgeInsets.symmetric(horizontal: AppSpacing.md);
+  static const EdgeInsets horizontalLg = EdgeInsets.symmetric(horizontal: AppSpacing.lg);
+  static const EdgeInsets horizontalXl = EdgeInsets.symmetric(horizontal: AppSpacing.xl);
+
+  /// Vertical padding
+  static const EdgeInsets verticalXs = EdgeInsets.symmetric(vertical: AppSpacing.xs);
+  static const EdgeInsets verticalSm = EdgeInsets.symmetric(vertical: AppSpacing.sm);
+  static const EdgeInsets verticalMd = EdgeInsets.symmetric(vertical: AppSpacing.md);
+  static const EdgeInsets verticalLg = EdgeInsets.symmetric(vertical: AppSpacing.lg);
+  static const EdgeInsets verticalXl = EdgeInsets.symmetric(vertical: AppSpacing.xl);
 }
 
 /// Gap widgets for SizedBox spacing
@@ -143,4 +165,13 @@ abstract class AppGaps {
   static const SizedBox vXl = SizedBox(height: AppSpacing.xl);
   static const SizedBox vXxl = SizedBox(height: AppSpacing.xxl);
   static const SizedBox vXxxl = SizedBox(height: AppSpacing.xxxl);
+
+  /// Simple gaps (vertical by default, commonly used)
+  static const SizedBox xs = SizedBox(height: AppSpacing.xs, width: AppSpacing.xs);
+  static const SizedBox sm = SizedBox(height: AppSpacing.sm, width: AppSpacing.sm);
+  static const SizedBox md = SizedBox(height: AppSpacing.md, width: AppSpacing.md);
+  static const SizedBox base = SizedBox(height: AppSpacing.base, width: AppSpacing.base);
+  static const SizedBox lg = SizedBox(height: AppSpacing.lg, width: AppSpacing.lg);
+  static const SizedBox xl = SizedBox(height: AppSpacing.xl, width: AppSpacing.xl);
+  static const SizedBox xxl = SizedBox(height: AppSpacing.xxl, width: AppSpacing.xxl);
 }
